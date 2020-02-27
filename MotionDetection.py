@@ -31,7 +31,7 @@ class MotionDetector:
         self.cam.release()
         cv2.destroyWindow('Detector')
 
-    def configure_cam(self, cam):
+    def __configure_cam(self, cam):
         cam.set(3, self.resolution[0])
         cam.set(4, self.resolution[1])
 
