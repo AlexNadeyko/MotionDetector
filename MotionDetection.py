@@ -34,13 +34,13 @@ class MotionDetector:
         cv2.destroyWindow('Detector')
 
 
-    def configure_cam(self, cam):
+    def __configure_cam(self, cam):
         cam.set(3, self.resolution[0])
         cam.set(4, self.resolution[1])
 
 
     def __setup(self):
-        self.configure_cam(self.cam)
+        self.__configure_cam(self.cam)
         self.last_frame = self.cam.read()[1]
         self.last_frame = cv2.cvtColor(self.last_frame, cv2.COLOR_BGR2GRAY)
 
