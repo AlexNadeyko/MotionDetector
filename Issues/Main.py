@@ -1,5 +1,4 @@
-from MotionDetection import MotionDetector, DetectorHandler
-from FaceAnalysis import FaceAnalyzer
+from MotionDetection import MotionDetector
 from time import sleep
 import cv2
 
