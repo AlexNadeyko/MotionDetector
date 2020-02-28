@@ -96,7 +96,7 @@ class MotionDetector:
             if contours_area > self.sensitivity:
                 attention_box = self.__get_attention_box(processed_frame)
                 x, y, w, h = attention_box
-                self.__last_motion = Motion(self.__current_frame, attention_box, datetime.datetime.now()[:-7])
+                self.__last_motion = Motion(self.__current_frame, attention_box, str(datetime.datetime.now())[:-7])
                 cv2.rectangle(self.__current_frame, (x - 5, y - 5), (x + w + 5, y + h + 5), (0, 255, 0), 2)
                 self.__draw_contours(contours)
                 self.motion_detected = True
