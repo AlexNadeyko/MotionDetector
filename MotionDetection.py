@@ -2,12 +2,16 @@ import cv2
 import numpy as np
 import datetime
 from threading import Thread
+from FaceAnalysis import FaceAnalyzer
+import time
 
 class MotionDetector:
-    def __init__(self, resolution:tuple = (800, 600), threshold:int = 10, sensitivity:int = 1000):
+    def __init__(self, resolution:tuple = (800, 600), threshold:int = 10, sensitivity:int = 1000,
+                 detection_delay:int = 3):
         self.resolution = resolution
         self.threshold = threshold
         self.sensitivity = sensitivity
+        self.detection_delay = detection_delay
         self.__cam = cv2.VideoCapture()
         self.morphology_kernel = np.ones((2,2), dtype=np.uint8)
         self.is_active = False
@@ -75,11 +79,12 @@ class MotionDetector:
 
 
     def __draw_contours(self, contours):
-        for c in contours:
-            cv2.drawContours(self.__current_frame, [c], 0, (0, 0, 255), 3)
+        pass
+        #for c in contours:
+            #cv2.drawContours(self.__current_frame, [c], 0, (0, 0, 255), 3)
 
-        cv2.putText(self.__current_frame, 'Motion Detected!!!', (40, 75), cv2.FONT_HERSHEY_SIMPLEX, color=(255, 0, 0), fontScale=1.25, thickness=3)
-        cv2.putText(self.__current_frame, str(datetime.datetime.now())[:-7], (40, 155), cv2.FONT_HERSHEY_SIMPLEX, color=(255, 0, 0), fontScale=1.25, thickness=3)
+        #cv2.putText(self.__current_frame, 'Motion Detected!!!', (40, 75), cv2.FONT_HERSHEY_SIMPLEX, color=(255, 0, 0), fontScale=1.25, thickness=3)
+        #cv2.putText(self.__current_frame, str(datetime.datetime.now())[:-7], (40, 155), cv2.FONT_HERSHEY_SIMPLEX, color=(255, 0, 0), fontScale=1.25, thickness=3)
 
 
     def __detect(self):
@@ -100,10 +105,6 @@ class MotionDetector:
                 cv2.rectangle(self.__current_frame, (x - 5, y - 5), (x + w + 5, y + h + 5), (0, 255, 0), 2)
                 self.__draw_contours(contours)
                 self.motion_detected = True
-                # #TODO
-                # '''Find out what is the best way for objects communication?
-                #  (Detector notifies handler or handler listens to changes in detector?'''
-
 
             cv2.imshow('Detector', self.__current_frame)
 
@@ -113,9 +114,9 @@ class MotionDetector:
 
 
 class DetectorHandler:
-    def __init__(self, detector:MotionDetector):
+    def __init__(self, detector:MotionDetector, analyzer:FaceAnalyzer):
         self.detector = detector
-        # self.face_analyzer = FaceAnalyzer()
+        self.face_analyzer = analyzer
         self.model = None
         self.__job_thread = None
 
@@ -124,14 +125,19 @@ class DetectorHandler:
         self.__job_thread.start()
 
     def __listen(self):
-        while self.detector.is_active:
-            if self.detector.motion_detected:
-                motion = self.detector.get_last_motion()
-                self.process_motion(motion)
+        while True:
+            if self.detector.is_active:
+                if self.detector.motion_detected:
+                    motion = self.detector.get_last_motion()
+                    self.process_motion(motion)
 
 
     def process_motion(self, motion):
-        pass
+        result, faces = self.face_analyzer.find_faces(motion)
+
+        if result is True:
+            self.face_analyzer.save_faces(faces)
+            time.sleep(self.detector.detection_delay)
         # Expected functionality:
         # result, faces = self.face_analyzer.find_faces(motion)
         # if result is not False:
