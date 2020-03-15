@@ -6,7 +6,7 @@ import random
 
 class FaceAnalyzer:
     def __init__(self):
-        self.__face_cascade = cv2.CascadeClassifier(r'C:\Users\twink\Dev\python\IoT_Project\MotionDetector\Cascades\haarcascade_frontalface_default.xml')
+        self.__face_cascade = cv2.CascadeClassifier(r'Cascades\haarcascade_frontalface_default.xml')
 
 
     def find_faces(self, motion):
