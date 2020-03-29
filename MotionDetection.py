@@ -5,6 +5,7 @@ from threading import Thread
 from FaceAnalysis import FaceAnalyzer
 import time
 
+
 class MotionDetector:
     def __init__(self, resolution:tuple = (800, 600), threshold:int = 10, sensitivity:int = 1000,
                  detection_delay:int = 3):
@@ -22,11 +23,16 @@ class MotionDetector:
         self.__last_motion = None
 
 
+    def get_current_frame(self):
+        return self.__current_frame
+
+
     def start(self):
         if not self.is_active or self.__job_thread is None:
             print('Starting detector')
             self.is_active = True
             self.__job_thread = Thread(target=self.__detect)
+            #self.__job_thread.daemon = True
             self.__job_thread.start()
 
 
@@ -110,6 +116,7 @@ class MotionDetector:
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
+
 
 
 
