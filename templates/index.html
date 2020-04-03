@@ -2,11 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Cerberus - Main Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </head>
-<body>
-    <h1>Video Streaming</h1>
-    <img src="{{ url_for('video_feed') }}">
-
+<body style="background-image: url({{url_for('static', filename='background_1.png')}}); background-repeat: no-repeat; background-size: cover">
+<!--    <div style="background-image: url({{url_for('static', filename='background_1.png')}}); background-repeat: no-repeat; background-size: cover">-->
+        <div class="container-fluid">
+            <h1 class="text-center" >Video Streaming</h1>
+            <div class="container-fluid">
+                 <div class="container-fluid mt-4" >
+                     <div class="row">
+                         <div class="col-md-6">
+                            <img src="{{ url_for('video_feed') }}" class="rounded" alt="Video" width="750" height="500" align="center">
+                         </div>
+                         <div class="col-md-6">
+                            <p></p>
+                         </div>
+                     </div>
+                 </div>
+            </div>
+        </div>
+<!--    </div>-->
 </body>
 </html>
