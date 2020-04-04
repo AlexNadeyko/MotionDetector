@@ -3,11 +3,12 @@ import numpy as np
 import datetime
 from threading import Thread
 from FaceAnalysis import FaceAnalyzer
-import time
-
 
 class MotionDetector:
-    def __init__(self, resolution:tuple = (800, 600), threshold:int = 10, sensitivity:int = 1000,
+    def __init__(self,
+                 resolution:tuple = (800, 600),
+                 threshold:int = 10,
+                 sensitivity:int = 1000,
                  detection_delay:int = 3):
         self.resolution = resolution
         self.threshold = threshold
@@ -34,7 +35,6 @@ class MotionDetector:
             self.__job_thread = Thread(target=self.__detect)
             #self.__job_thread.daemon = True
             self.__job_thread.start()
-
 
 
     def stop(self):
@@ -83,16 +83,6 @@ class MotionDetector:
         attention_box = cv2.boundingRect(mask_points)
         return attention_box
 
-
-    def __draw_contours(self, contours):
-        pass
-        #for c in contours:
-            #cv2.drawContours(self.__current_frame, [c], 0, (0, 0, 255), 3)
-
-        #cv2.putText(self.__current_frame, 'Motion Detected!!!', (40, 75), cv2.FONT_HERSHEY_SIMPLEX, color=(255, 0, 0), fontScale=1.25, thickness=3)
-        #cv2.putText(self.__current_frame, str(datetime.datetime.now())[:-7], (40, 155), cv2.FONT_HERSHEY_SIMPLEX, color=(255, 0, 0), fontScale=1.25, thickness=3)
-
-
     def __detect(self):
         self.__setup()
         while True:
@@ -108,15 +98,12 @@ class MotionDetector:
                 attention_box = self.__get_attention_box(processed_frame)
                 x, y, w, h = attention_box
                 self.__last_motion = Motion(self.__current_frame, attention_box, str(datetime.datetime.now())[:-7])
-                cv2.rectangle(self.__current_frame, (x - 5, y - 5), (x + w + 5, y + h + 5), (0, 255, 0), 2)
-                self.__draw_contours(contours)
                 self.motion_detected = True
 
             cv2.imshow('Detector', self.__current_frame)
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
-
 
 
 
@@ -133,27 +120,11 @@ class DetectorHandler:
 
     def __listen(self):
         while True:
-            if self.detector.is_active:
-                if self.detector.motion_detected:
-                    motion = self.detector.get_last_motion()
-                    self.process_motion(motion)
-
-
-    def process_motion(self, motion):
-        result, faces = self.face_analyzer.find_faces(motion)
-
-        if result is True:
-            self.face_analyzer.save_faces(faces)
-            time.sleep(self.detector.detection_delay)
-        # Expected functionality:
-        # result, faces = self.face_analyzer.find_faces(motion)
-        # if result is not False:
-        #     for f in faces:
-        #         prediction = self.model.predict(f)
-        #         if prediction in FacesDatabase:
-        #             pass
-        #         else:
-        #             MakeAlert()
+            if self.detector.is_active and self.detector.motion_detected:
+                motion = self.detector.get_last_motion()
+                unknown_faces = self.face_analyzer.process_motion(motion)
+                if unknown_faces is not None:
+                    self.face_analyzer.save_unknown_faces(unknown_faces)
 
 
 
