@@ -78,11 +78,11 @@ class FaceAnalyzer(Thread):
                 faces = [rotated[y:y + h, x:x + w] for (x, y, w, h) in face_boxes]
 
             elif self.model == 'hog':
-                face_boxes = face_recognition.face_locations(img, model=self.model)
+                face_boxes = face_recognition.face_locations(rotated)
 
                 if len(face_boxes) == 0:
                     continue
-                faces = [img[top:bottom, left:right] for (top, right, bottom, left) in face_boxes]
+                faces = [rotated[top:bottom, left:right] for (top, right, bottom, left) in face_boxes]
 
             return (True, faces)
         return (False, None)
