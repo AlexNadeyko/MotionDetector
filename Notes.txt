@@ -1,0 +1,13 @@
+For faces detection HOG detector is slower comparing to standard haardetector.
+
+To improve performance of face locations, we could use 1.x scaling factor,
+so the image size is reduced by (x*10)% (Experiment with some scales).
+
+Haardetector is not rotation invariant (if face was rotated by more than ~30 degrees, it can't locate it).
+So we can bypass this problem by rotating motion frame from 0 to 360 degrees with 20 degrees step and analyzing each rotated image.
+Doing this allows us to most probably find faces on frame even if they are rotated, but we lose some performance (actually not so much).
+
+!!!
+Face detection depends on luminosity of the room. To deal with this problem we could before saving known face encoding,
+perform some brightness manipulation on it, and than save one normalized encoding of same images but with different brightness.
+After doing this the 'tolerance' parameter might also be tuned (i suppose so).

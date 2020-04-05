@@ -8,4 +8,3 @@ handler = DetectorHandler(detector, analyzer)
 
 detector.start()
 handler.listen()
-

@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import datetime
+import copy
 from threading import Thread
 from FaceAnalysis import FaceAnalyzer
 
@@ -8,12 +9,10 @@ class MotionDetector:
     def __init__(self,
                  resolution:tuple = (800, 600),
                  threshold:int = 10,
-                 sensitivity:int = 1000,
-                 detection_delay:int = 3):
+                 sensitivity:int = 1000):
         self.resolution = resolution
         self.threshold = threshold
         self.sensitivity = sensitivity
-        self.detection_delay = detection_delay
         self.__cam = cv2.VideoCapture()
         self.morphology_kernel = np.ones((2,2), dtype=np.uint8)
         self.is_active = False
@@ -33,7 +32,6 @@ class MotionDetector:
             print('Starting detector')
             self.is_active = True
             self.__job_thread = Thread(target=self.__detect)
-            #self.__job_thread.daemon = True
             self.__job_thread.start()
 
 
@@ -46,7 +44,7 @@ class MotionDetector:
 
 
     def get_last_motion(self):
-        return self.__last_motion
+        return copy.deepcopy(self.__last_motion)
 
 
     def __configure_cam(self, cam):
@@ -112,10 +110,10 @@ class DetectorHandler:
         self.detector = detector
         self.face_analyzer = analyzer
         self.model = None
-        self.__job_thread = None
 
     def listen(self):
         self.__job_thread = Thread(target=self.__listen)
+        self.__job_thread.daemon = True
         self.__job_thread.start()
 
     def __listen(self):
