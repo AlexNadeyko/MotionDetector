@@ -95,6 +95,24 @@
   }
 }
 
+
+table {
+
+    border-collapse: collapse;
+    border-spacing: 0;
+     width:60%;
+    border: 1px solid #ddd;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+  font-family: Russo One, sans-serif;
+  color: #ffffff;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
     </style>
 
 </head>
@@ -139,8 +157,8 @@
             <div class="container-fluid">
                  <div class="container-fluid mt-4" >
                      <div class="row">
-                         <div class="col-md-6">
-                            <img id="myImg" src="{{ url_for('video_feed') }}" class="rounded" alt="Video" width="750" height="500" align="center">
+                         <div class="col-md-8">
+                            <img id="myImg" src="{{ url_for('video_feed') }}" class="rounded" alt="Video" width="85%" height="80%" align="center">
 
                              <!-- The Modal -->
 <div id="myModal" class="modal">
@@ -174,7 +192,7 @@ span.onclick = function() {
 
 
                          </div>
-                         <div class="col-md-6">
+                         <div class="col-md-4">
                             <div style="overflow-y:auto;">
                                  <table>
                                      <tr>
