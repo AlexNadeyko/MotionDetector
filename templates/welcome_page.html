@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CERBERUS - Welcome Page</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+
+<style>
+   body, html {
+    height: 100%;
+    margin: 0;
+/* font-family: Arial, Helvetica, sans-serif; */
+    }
+
+/* The hero image */
+.hero-image {
+
+  /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{ url_for('static', filename='background_5.png') }});;
+
+  /* Set a specific height */
+  height: 100%;
+
+  /* Position and center the image to scale nicely on all screens */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+
+/* Place text in the middle of the image */
+.hero-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+    transform: translate(-50%, -50%);
+  color: #00b38f;
+}
+
+
+/*transform: translate(-50%, -50%); */
+
+
+.hero-text a {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 10px 25px;
+  color: black;
+  background-color: #00b38f;
+  text-align: center;
+  cursor: pointer;
+}
+
+.hero-text a:hover {
+  background-color: #006652;
+  color: white;
+}
+
+</style>
+</head>
+
+<body>
+
+<!--    <nav class="navbar navbar-dark" style="background-color: #262626;">-->
+<!--        <a class="navbar-brand" href="#">-->
+<!--            <img src={{url_for('static', filename='logo_1.png')}} alt="Logo" style="width:90px;">-->
+<!--        </a>-->
+<!--        <a class="nav-link" style="font-family: Russo One, sans-serif; color: #00b38f; text-align:center; 	font-size: 40px" href="#">CERBERUS</a>-->
+<!--&lt;!&ndash;        <h2 style="font-family: Gugi, cursive; color: #00b38f; text-align:center; 	font-size: 24px ">CEREBRUS</h2>&ndash;&gt;-->
+<!--        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--             <span class="navbar-toggler-icon"></span>-->
+<!--        </button>-->
+<!--        <div class="collapse navbar-collapse" id="navbarNavDropdown">-->
+<!--            <ul class="navbar-nav">-->
+<!--                <li class="nav-item active">-->
+<!--                    <a class="nav-link" href="#">Main Page<span class="sr-only">(current)</span></a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" href="#">Monitoring Log</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" href="#">Something</a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </nav>-->
+
+     <div class="hero-image">
+
+        <img src="{{ url_for('static', filename='logo_2.png') }}" style="max-width: 100%; max-high:  100%; margin-left: auto; margin-right: auto; margin-bottom: 10 px;   display:block;  ">
+
+        <div class="hero-text">
+            <h1 style="font-family: Russo One, sans-serif; color: #00b38f; text-align:center; 	font-size: 80px">CERBERUS</h1>
+            <p style="font-family: Russo One, sans-serif; color: #00b38f; text-align:center; 	font-size: 20px">The system  bla bla bla</p>
+            <a  href="{{url_for('main_page')}}">Sign In</a>
+        </div>
+     </div>
+
+</body>
+</html>

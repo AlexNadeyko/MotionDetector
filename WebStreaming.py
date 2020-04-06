@@ -19,8 +19,20 @@ app = Flask(__name__)
 
 # set acting on main page
 @app.route('/')
-def index():
+def welcome_page():
+    return render_template('welcome_page.html')
+
+# @app.route('/')
+# def index():
+#     return render_template('welcome_page.html')
+
+@app.route('/main_page/')
+def main_page():
     return render_template('index.html')
+
+# @app.route('/welcome_page/')
+# def welcome_page():
+#     return render_template('welcome_page.html')
 
 # function that prepare current frame to sending
 def generate():
