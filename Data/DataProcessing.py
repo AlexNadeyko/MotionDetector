@@ -10,5 +10,5 @@ def save_encoding(encoding):
     old_encodings = load_encodings()
     old_encodings.update(encoding)
 
-    with open('known_encodings.dat', 'wb') as f:
+    with open(r'./Data/known_encodings.dat', 'wb') as f:
         pickle.dump(old_encodings, f)

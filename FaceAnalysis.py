@@ -4,16 +4,26 @@ import face_recognition
 import datetime
 from threading import Thread
 import Data.DataProcessing as dp
+from os import path, mkdir
 
 class FaceAnalyzer(Thread):
     def __init__(self, tolerance=0.6, model='haar'):
         self.model = model
         self.tolerance = tolerance
         self.__face_cascade = cv2.CascadeClassifier(r'./Cascades/haarcascade_frontalface_default.xml')
-        self.__unknown_faces_dir = r'./Faces/Unknown'
+        self.__unknown_faces_dir = r'Faces/Unknown'
         self.__encodings = dp.load_encodings()
         self.current_face = None
         self.current_encoding = None
+        self.prepare_workspace()
+
+    def prepare_workspace(self):
+        if not path.exists(self.__unknown_faces_dir[:-8]):
+            mkdir(self.__unknown_faces_dir[:-8])
+            mkdir(self.__unknown_faces_dir)
+        else:
+            if not path.exists(self.__unknown_faces_dir):
+                mkdir(self.__unknown_faces_dir)
 
 
     def process_motion(self, motion):
