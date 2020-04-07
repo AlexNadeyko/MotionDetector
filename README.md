@@ -7,11 +7,3 @@ GENERAL REQUIREMENTS:
 3. Face recognition (In progress)
 4. Web deployment (In progress)
 5. Sms notifications system
-
-
-Requirements:
-1. opencv-python
-2. face_recognition
-3. numpy
-4. pickle
-5. flask
