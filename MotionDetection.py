@@ -17,9 +17,10 @@ class MotionDetector:
         self.morphology_kernel = np.ones((2,2), dtype=np.uint8)
         self.is_active = False
         self.motion_detected = False
+        self.frames = Queue(1)
         self.__last_frame = None
         self.__current_frame = None
-        self.__job_thread = None
+        self.__worker = None
 
 
     def get_current_frame(self):
@@ -28,17 +29,17 @@ class MotionDetector:
 
 
     def start(self):
-        if not self.is_active or self.__job_thread is None:
+        if not self.is_active or self.__worker is None:
             print('Starting detector')
             self.is_active = True
-            self.__job_thread = Process(target=self.detect, args=(motions,))
-            self.__job_thread.start()
+            self.__worker = Process(target=self.detect, args=(motions,))
+            self.__worker.start()
 
 
     def stop(self):
         print('Stopping detector')
         self.is_active = False
-        self.__job_thread.join()
+        self.__worker.join()
         self.__cam.release()
         cv2.destroyWindow('Detector')
 
@@ -86,6 +87,10 @@ class MotionDetector:
                 break
 
             self.__current_frame = self.__cam.read()[1]
+
+            if not self.frames.full():
+                self.frames.put(self.__current_frame)
+
             processed_frame, self.__last_frame = self.__process_frame(self.__current_frame)
             contours, contours_area = self.__get_contours(processed_frame)
 

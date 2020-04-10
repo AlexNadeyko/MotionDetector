@@ -9,7 +9,7 @@ import MotionDetection
 
 class FaceAnalyzer():
     def __init__(self, tolerance=0.6, model='haar'):
-        self.worker = None
+        self.__worker = None
         self.model = model
         self.tolerance = tolerance
         self.__unknown_faces_dir = r'Faces/Unknown'
@@ -19,8 +19,8 @@ class FaceAnalyzer():
         self.prepare_workspace()
 
     def start(self):
-        self.worker = Process(target=self.process_motions, args=(MotionDetection.motions,))
-        self.worker.start()
+        self.__worker = Process(target=self.process_motions, args=(MotionDetection.motions,))
+        self.__worker.start()
 
     def prepare_workspace(self):
         if not path.exists(self.__unknown_faces_dir[:-8]):

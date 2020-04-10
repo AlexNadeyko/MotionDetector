@@ -35,13 +35,12 @@ def main_page():
 def generate():
     # loop over frames from the output stream
     while True:
-        current_frame = detector.get_current_frame()
 
 
-        if current_frame is None:
-
+        if detector.frames.empty():
             continue
 
+        current_frame = detector.frames.get()
         # encode the frame in JPEG format
         (flag, encodedImage) = cv2.imencode(".jpg", current_frame)
 
