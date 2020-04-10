@@ -1,10 +1,9 @@
-from MotionDetection import MotionDetector, DetectorHandler
+from MotionDetection import MotionDetector
 from FaceAnalysis import FaceAnalyzer
 
 detector = MotionDetector()
 analyzer = FaceAnalyzer()
 
-handler = DetectorHandler(detector, analyzer)
-
-detector.start()
-handler.listen()
+if __name__ == '__main__':
+    detector.start()
+    analyzer.start()

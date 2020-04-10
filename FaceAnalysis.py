@@ -2,20 +2,25 @@ import cv2
 import numpy as np
 import face_recognition
 import datetime
-from threading import Thread
+from multiprocessing import Process
 import Data.DataProcessing as dp
 from os import path, mkdir
+import MotionDetection
 
-class FaceAnalyzer(Thread):
+class FaceAnalyzer():
     def __init__(self, tolerance=0.6, model='haar'):
+        self.worker = None
         self.model = model
         self.tolerance = tolerance
-        self.__face_cascade = cv2.CascadeClassifier(r'./Cascades/haarcascade_frontalface_default.xml')
         self.__unknown_faces_dir = r'Faces/Unknown'
         self.__encodings = dp.load_encodings()
         self.current_face = None
         self.current_encoding = None
         self.prepare_workspace()
+
+    def start(self):
+        self.worker = Process(target=self.process_motions, args=(MotionDetection.motions,))
+        self.worker.start()
 
     def prepare_workspace(self):
         if not path.exists(self.__unknown_faces_dir[:-8]):
@@ -26,35 +31,36 @@ class FaceAnalyzer(Thread):
                 mkdir(self.__unknown_faces_dir)
 
 
-    def process_motion(self, motion):
-        found_faces, faces = self.find_faces(motion)
-        if found_faces:
-            unknown_faces = []
-            for face in faces:
-                face_encoding = face_recognition.face_encodings(face)
-                face_encoding = np.asarray(face_encoding).flatten()
+    def process_motions(self, motions):
+        while True:
+            if not motions.empty():
+                motion = motions.get()
+                found_faces, faces = self.find_faces(motion)
+                if found_faces:
+                    unknown_faces = []
+                    for face in faces:
+                        face_encoding = face_recognition.face_encodings(face)
+                        face_encoding = np.asarray(face_encoding).flatten()
 
-                if len(face_encoding) == 0:
-                    continue
+                        if len(face_encoding) == 0:
+                            continue
 
-                known_encodings_list = np.asarray(list(self.__encodings.values()))
+                        known_encodings_list = np.asarray(list(self.__encodings.values()))
 
-                results = face_recognition.compare_faces(known_encodings_list, face_encoding, self.tolerance)
-                is_known = np.any(results)
+                        results = face_recognition.compare_faces(known_encodings_list, face_encoding, self.tolerance)
+                        is_known = np.any(results)
 
-                if not is_known:
-                    unknown_faces.append(face)
-                else:
-                    try:
-                        known_name = list(self.__encodings.keys())[np.where(results)[0][0]] # Here sometimes exception occurs
-                        print(f'Face known [{known_name}] (Remove this message after release)')
-                    except:
-                        pass
+                        if not is_known:
+                            unknown_faces.append(face)
+                        else:
+                            try:
+                                known_name = list(self.__encodings.keys())[np.where(results)[0][0]] # Here sometimes exception occurs
+                                print(f'Face known [{known_name}] (Remove this message after release)')
+                            except:
+                                pass
 
-            if len(unknown_faces) > 0:
-                return unknown_faces
-            else:
-                return None
+                    if len(unknown_faces) > 0:
+                        self.save_unknown_faces(unknown_faces)
 
 
     def find_faces(self, motion):
@@ -81,7 +87,8 @@ class FaceAnalyzer(Thread):
             faces = []
 
             if self.model == 'haar':
-                face_boxes = self.__face_cascade.detectMultiScale(rotated, 1.25, minNeighbors=4)
+                face_cascade = cv2.CascadeClassifier(r'./Cascades/haarcascade_frontalface_default.xml')
+                face_boxes = face_cascade.detectMultiScale(rotated, 1.25, minNeighbors=4)
 
                 if len(face_boxes) == 0:
                     continue
