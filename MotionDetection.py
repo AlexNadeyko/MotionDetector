@@ -23,6 +23,7 @@ class MotionDetector:
 
 
     def get_current_frame(self):
+
         return self.__current_frame
 
 
