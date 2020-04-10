@@ -1,4 +1,4 @@
-from MotionDetection import MotionDetector, DetectorHandler
+from MotionDetection import MotionDetector
 from FaceAnalysis import FaceAnalyzer
 from flask import Flask
 from flask import Response
@@ -8,11 +8,6 @@ import cv2
 
 detector = MotionDetector()
 analyzer = FaceAnalyzer()
-
-handler = DetectorHandler(detector, analyzer)
-
-detector.start()
-handler.listen()
 
 # create instance of web application
 app = Flask(__name__)
@@ -38,11 +33,11 @@ def main_page():
 def generate():
     # loop over frames from the output stream
     while True:
-        current_frame = detector.get_current_frame()
 
-        if current_frame is None:
+        if detector.frames.empty():
             continue
 
+        current_frame = detector.frames.get()
         # encode the frame in JPEG format
         (flag, encodedImage) = cv2.imencode(".jpg", current_frame)
 
@@ -65,6 +60,8 @@ def video_feed():
 
 # check if this is the main thread of execution
 if __name__ == "__main__":
+    detector.start()
+    analyzer.start()
     app.run()
 
 
