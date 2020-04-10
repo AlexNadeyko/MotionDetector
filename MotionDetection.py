@@ -1,9 +1,9 @@
 import cv2
 import numpy as np
 import datetime
-import copy
-from threading import Thread
-from FaceAnalysis import FaceAnalyzer
+from multiprocessing import Process, Queue
+
+motions = Queue(1)
 
 class MotionDetector:
     def __init__(self,
@@ -13,14 +13,13 @@ class MotionDetector:
         self.resolution = resolution
         self.threshold = threshold
         self.sensitivity = sensitivity
-        self.__cam = cv2.VideoCapture()
+        self.__cam = None
         self.morphology_kernel = np.ones((2,2), dtype=np.uint8)
         self.is_active = False
         self.motion_detected = False
         self.__last_frame = None
         self.__current_frame = None
         self.__job_thread = None
-        self.__last_motion = None
 
 
     def get_current_frame(self):
@@ -31,7 +30,7 @@ class MotionDetector:
         if not self.is_active or self.__job_thread is None:
             print('Starting detector')
             self.is_active = True
-            self.__job_thread = Thread(target=self.__detect)
+            self.__job_thread = Process(target=self.detect, args=(motions,))
             self.__job_thread.start()
 
 
@@ -41,10 +40,6 @@ class MotionDetector:
         self.__job_thread.join()
         self.__cam.release()
         cv2.destroyWindow('Detector')
-
-
-    def get_last_motion(self):
-        return copy.deepcopy(self.__last_motion)
 
 
     def __configure_cam(self, cam):
@@ -81,13 +76,14 @@ class MotionDetector:
         attention_box = cv2.boundingRect(mask_points)
         return attention_box
 
-    def __detect(self):
-        self.__setup()
+    def detect(self, queue):
+        self.__cam = cv2.VideoCapture(0)
+        self.__last_frame = self.__cam.read()[1]
+        self.__last_frame = cv2.cvtColor(self.__last_frame, cv2.COLOR_BGR2GRAY)
         while True:
             if not self.is_active:
                 break
 
-            self.motion_detected = False
             self.__current_frame = self.__cam.read()[1]
             processed_frame, self.__last_frame = self.__process_frame(self.__current_frame)
             contours, contours_area = self.__get_contours(processed_frame)
@@ -95,35 +91,14 @@ class MotionDetector:
             if contours_area > self.sensitivity:
                 attention_box = self.__get_attention_box(processed_frame)
                 x, y, w, h = attention_box
-                self.__last_motion = Motion(self.__current_frame, attention_box, str(datetime.datetime.now())[:-7])
-                self.motion_detected = True
+                motion = Motion(self.__current_frame, attention_box, str(datetime.datetime.now())[:-7])
+                if not queue.full():
+                    queue.put(motion)
 
             cv2.imshow('Detector', self.__current_frame)
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
-
-
-
-class DetectorHandler:
-    def __init__(self, detector:MotionDetector, analyzer:FaceAnalyzer):
-        self.detector = detector
-        self.face_analyzer = analyzer
-        self.model = None
-
-    def listen(self):
-        self.__job_thread = Thread(target=self.__listen)
-        self.__job_thread.daemon = True
-        self.__job_thread.start()
-
-    def __listen(self):
-        while True:
-            if self.detector.is_active and self.detector.motion_detected:
-                motion = self.detector.get_last_motion()
-                unknown_faces = self.face_analyzer.process_motion(motion)
-                if unknown_faces is not None:
-                    self.face_analyzer.save_unknown_faces(unknown_faces)
-
 
 
 class Motion:
