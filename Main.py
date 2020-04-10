@@ -6,6 +6,7 @@ import time
 
 frames = Queue(10)
 cam = cv2.VideoCapture(0)
+face_cascade = cv2.CascadeClassifier(r'./haarcascade_frontalface_default.xml')
 
 def capture():
     prevTime = 0
@@ -90,7 +91,7 @@ def process(case):
                 cv2.imshow('Processed', frame)
                 cv2.waitKey(1)
 
-            elif case == 'FaceRecognition':
+            elif case == 'FaceLandmarks':
                 face_landmarks_list = face_recognition.face_landmarks(frame)
                 for face_landmarks in face_landmarks_list:
 
@@ -99,10 +100,17 @@ def process(case):
                             cv2.circle(frame, (point[0], point[1]), 2, (0, 255, 0))
                 cv2.imshow('Processed', frame)
                 cv2.waitKey(1)
+            elif case == 'HaarFaceDetection':
+                face_boxes = face_cascade.detectMultiScale(frame, 1.25, minNeighbors=4)
+                for (x, y, w, h) in face_boxes:
+                    frame = cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
+                cv2.imshow('Processed', frame)
+                cv2.waitKey(1)
 
 
 case1 = 'OpencvProcessing'
-case2 = 'FaceRecognition'
+case2 = 'FaceLandmarks'
+case3 = 'HaarFaceDetection'
 
 # Insert case1 or case2 to th2 args and see te difference in FPS
 
@@ -114,6 +122,6 @@ case2 = 'FaceRecognition'
 
 if __name__ == '__main__':
     th1 = Thread(target=capture)
-    th2 = Thread(target=process, args=(case2,))
+    th2 = Thread(target=process, args=(case3,))
     th1.start()
     th2.start()
