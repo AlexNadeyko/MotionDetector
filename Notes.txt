@@ -11,3 +11,8 @@ Doing this allows us to most probably find faces on frame even if they are rotat
 Face detection depends on luminosity of the room. To deal with this problem we could before saving known face encoding,
 perform some brightness manipulation on it, and than save one normalized encoding of same images but with different brightness.
 After doing this the 'tolerance' parameter might also be tuned (i suppose so).
+
+So i found out that using multiple threads for video streaming and processing is not a good idea. The point is that
+when frame processing thread starts it's job, it takes almost all of the resources of the process. As a result video streaming
+thread does not receive enough system resources and starts to freeze.
+Solution is to use Processes with synchronized Queue instead of Threads, so that each process will use it's resources separately.
