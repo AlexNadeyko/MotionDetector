@@ -1,6 +1,7 @@
 import sqlite3
 import re
 import os
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 def insert_into_log(log):
@@ -58,3 +59,22 @@ def connect():
 
     except Exception as e:
         print(f'Something went wrong: {e}')
+
+
+def check_if_user_exist(login, password):
+    conn = connect()
+    with conn:
+        cursor = conn.cursor()
+        sql_select_query = """SELECT * FROM user WHERE login = ?"""
+        hashed_password = generate_password_hash(password)
+        cursor.execute(sql_select_query, (login,))
+        user = cursor.fetchall()
+
+        if check_password_hash(user[0][1], password):
+            print("True")
+            return True
+        else:
+            print("False")
+            return False
+
+
