@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>CERBERUS - Sign Up</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Play&display=swap" rel="stylesheet">
+
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+
+        <style>
+
+            body {
+                background-color:#0c0d0e;
+            }
+
+
+
+
+            .container {
+
+                margin: 80px auto;
+                width: 90%;
+                max-width: 800px;
+
+
+            }
+
+
+            .registration {
+                background-color: #2c2c2c;
+
+                padding-left: 20px;
+                padding-right: 20px;
+                padding-bottom: 20px;
+                box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.3);
+                border: 1px solid #888;
+            }
+
+
+            .input-requirements {
+              /*font-size: 1.3rem;*/
+              font-style: italic;
+              text-align: left;
+              list-style: disc;
+              list-style-position: inside;
+              /*max-width: 400px;*/
+              margin: 10px auto;
+
+            }
+
+            input[type=text], input[type=password] {
+              width: 100%;
+              padding: 12px 20px;
+              margin: 8px 0;
+              display: inline-block;
+              box-sizing: border-box;
+              background-color: #333333;
+              color: #00b38f;
+              font-family: 'Play', sans-serif;
+            }
+
+
+
+            button {
+              border: none;
+              outline: 0;
+              display: inline-block;
+              padding: 10px 25px;
+              color: black;
+              background-color: #00b38f;
+              text-align: center;
+              cursor: pointer;
+              width: 100%;
+              margin-top: 20px;
+
+            }
+
+
+            button:hover {
+              background-color: #006652;
+              color: white;
+              opacity: 0.8;
+            }
+
+            .container_inf_line {
+                margin: 10px;
+            }
+
+            .inf_line {
+                color: #df0707;
+                text-align: center;
+            }
+
+
+
+            .invalid_requirement {
+                color: #c72444;
+            }
+
+            .valid_requirement {
+                color: #41fc03;
+            }
+
+            .neutral_requirement {
+                color: #baadb0;
+            }
+
+            .valid_input {
+            border: 1px solid #00b38f;
+
+            }
+
+            .invalid_input {
+
+              border: 1px solid #df0707;
+
+            }
+
+            .neutral_input {
+                border: 1px solid #888;
+            }
+
+            .input_elements{
+
+            }
+
+        </style>
+
+    </head>
+    <body>
+
+        <div class="container">
+            <form class="registration" action="/sign_up" method="POST">
+                <h1 style="font-family: Russo One, sans-serif; color: #00b38f; text-align: center; margin-top:10px;">Sign Up</h1>
+
+
+
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div class="container_inf_line">
+                  <p class="inf_line" id="informational_line_2">{{ messages[0] }}.</p>
+                </div>
+                {% endif %}
+                {% endwith %}
+
+
+
+                <label for="username_sign_up" style="font-family: Russo One, sans-serif; color: #00b38f;">
+                    <b>Username</b>
+                </label>
+                <input  class="neutral_input input_elements" type="text" id ="user_name_sign_up" placeholder="Enter Username" name="user_name_sign_up"  required >
+                    <ul class="input-requirements neutral_requirement">
+                        <li id = "first_requirement_username">At least 3 characters long</li>
+                        <li id = "second_requirement_username">Must only contain letters and numbers (no special characters)</li>
+                    </ul>
+
+
+
+
+
+<!--                <label for="username">-->
+<!--                    <span>Username</span>-->
+
+<!--                    <input type="text" id="username" minlength="3" required>-->
+
+<!--                    <ul class="input-requirements">-->
+<!--                        <li>At least 3 characters long</li>-->
+<!--                        <li>Must only contain letters and numbers (no special characters)</li>-->
+<!--                    </ul>-->
+<!--                </label>-->
+
+                <label for="password_sign_up" style="font-family: Russo One, sans-serif; color: #00b38f;">
+                    <b>Password</b>
+                 </label>
+                <input class="neutral_input input_elements" type="password" id = "password_sign_up" placeholder="Enter Password" name="password_sign_up" required>
+                    <ul class="input-requirements neutral_requirement">
+                        <li id = "first_requirement_password">At least 8 characters long (and less than 100 characters)</li>
+
+                        <li id = "third_requirement_password">Contains at least 1 lowercase letter</li>
+                        <li id = "fourth_requirement_password">Contains at least 1 uppercase letter</li>
+                        <li id = "fifth_requirement_password">Contains a special character ( !, @, #, $, %, ^, &, *, _ )</li>
+                    </ul>
+
+
+
+<!--                <label for="password">-->
+<!--                    <span>Password</span>-->
+
+<!--                    <input type="password" id="password"-->
+<!--                            maxlength="100" minlength="8" required>-->
+
+<!--                    <ul class="input-requirements">-->
+<!--                        <li>At least 8 characters long (and less than 100 characters)</li>-->
+<!--                        <li>Contains at least 1 number</li>-->
+<!--                        <li>Contains at least 1 lowercase letter</li>-->
+<!--                        <li>Contains at least 1 uppercase letter</li>-->
+<!--                        <li>Contains a special character (e.g. @ !)</li>-->
+<!--                    </ul>-->
+<!--                </label>-->
+
+
+                <label for="confirm_password_sign_up" style="font-family: Russo One, sans-serif; color: #00b38f;">
+                    <b>Confirm Password</b>
+                </label>
+                    <input class="neutral_input input_elements" type="password" id ="confirm_password_sign_up" placeholder="Enter Password" name="confirm_password_sign_up" required>
+
+
+
+                <button id="button_sign_up" type="submit" disabled>Submit</button>
+
+
+
+<!--                <label for="password_repeat">-->
+<!--                    <span>Repeat Password</span>-->
+<!--                    <input type="password" id="password_repeat" maxlength="100" minlength="8" required>-->
+<!--                </label>-->
+
+<!--                <br>-->
+
+<!--                <input type="submit">-->
+
+            </form>
+	</div>
+
+            <script>
+
+                var usernameInput = document.getElementById('user_name_sign_up');
+                var usernameInputFirstRequirement = document.getElementById('first_requirement_username');
+                var usernameInputSecondRequirement = document.getElementById('second_requirement_username');
+
+                var passwordInput = document.getElementById('password_sign_up');
+                var passwordInputFirstRequirement = document.getElementById('first_requirement_password');
+                var passwordInputThirdRequirement = document.getElementById('third_requirement_password');
+                var passwordInputFourthRequirement = document.getElementById('fourth_requirement_password');
+                var passwordInputFifthRequirement = document.getElementById('fifth_requirement_password');
+
+                var passwordConfirmInput = document.getElementById('confirm_password_sign_up');
+
+                var usernameStatus = false;
+                var passwordStatus = false;
+                var confirmPasswordStatus = false;
+
+                var usernameInputFirstRequirementStatus = false;
+                var usernameInputSecondRequirementStatus = false;
+                var passwordInputFirstRequirementStatus = false;
+                var passwordInputThirdRequirementStatus = false;
+                var passwordInputFourthRequirementStatus = false;
+                var passwordInputFifthRequirementStatus = false;
+
+
+
+
+                usernameInput.onkeyup = function(){
+                    if (usernameInput.value.length < 3) {
+
+                        usernameInputFirstRequirement.classList.remove('neutral')
+                        usernameInputFirstRequirement.classList.remove('valid_requirement');
+                        usernameInputFirstRequirement.classList.add('invalid_requirement');
+
+
+                        usernameInputFirstRequirementStatus = false;
+
+                    }
+                    else{
+                        usernameInputFirstRequirement.classList.remove('neutral');
+                        usernameInputFirstRequirement.classList.remove('invalid_requirement');
+                        usernameInputFirstRequirement.classList.add('valid_requirement');
+
+                        usernameInputFirstRequirementStatus = true;
+
+                    }
+
+                    if (usernameInput.value.match(/[^a-zA-Z0-9]/g)) {
+                        usernameInputSecondRequirement.classList.remove('neutral');
+                        usernameInputSecondRequirement.classList.remove('valid_requirement');
+                        usernameInputSecondRequirement.classList.add('invalid_requirement');
+                        usernameInputSecondRequirementStatus = false;
+
+                    }
+                    else{
+                        usernameInputSecondRequirement.classList.remove('neutral');
+                        usernameInputSecondRequirement.classList.remove('invalid_requirement');
+                        usernameInputSecondRequirement.classList.add('valid_requirement');
+                        usernameInputSecondRequirementStatus = true;
+                    }
+                }
+
+
+
+                passwordInput.onkeyup = function(){
+
+                    if (passwordInput.value.length < 8 || passwordInput.value.length > 20) {
+
+                        passwordInputFirstRequirement.classList.remove('neutral')
+                        passwordInputFirstRequirement.classList.remove('valid_requirement');
+                        passwordInputFirstRequirement.classList.add('invalid_requirement');
+                        passwordInputFirstRequirementStatus = false;
+
+                    }
+                    else{
+
+                        passwordInputFirstRequirement.classList.remove('neutral');
+                        passwordInputFirstRequirement.classList.remove('invalid_requirement');
+                        passwordInputFirstRequirement.classList.add('valid_requirement');
+                        passwordInputFirstRequirementStatus = true;
+
+                    }
+
+                    if (passwordInput.value.match(/[a-z]/g)){
+                        passwordInputThirdRequirement.classList.remove('neutral')
+                        passwordInputThirdRequirement.classList.remove('invalid_requirement');
+                        passwordInputThirdRequirement.classList.add('valid_requirement');
+                        passwordInputThirdRequirementStatus = true;
+                    }
+                    else{
+                        passwordInputThirdRequirement.classList.remove('neutral')
+                        passwordInputThirdRequirement.classList.remove('valid_requirement');
+                        passwordInputThirdRequirement.classList.add('invalid_requirement');
+                        passwordInputThirdRequirementStatus = false;
+                    }
+
+
+                    if (passwordInput.value.match(/[A-Z]/g)){
+                        passwordInputFourthRequirement.classList.remove('neutral')
+                        passwordInputFourthRequirement.classList.remove('invalid_requirement');
+                        passwordInputFourthRequirement.classList.add('valid_requirement');
+                        passwordInputFourthRequirementStatus = true;
+                    }
+                    else{
+                        passwordInputFourthRequirement.classList.remove('neutral')
+                        passwordInputFourthRequirement.classList.remove('valid_requirement');
+                        passwordInputFourthRequirement.classList.add('invalid_requirement');
+                        passwordInputFourthRequirementStatus = false;
+                    }
+
+                   if (passwordInput.value.match(/[\!\@\#\$\%\^\&\*\_]/g)){
+                        passwordInputFifthRequirement.classList.remove('neutral')
+                        passwordInputFifthRequirement.classList.remove('invalid_requirement');
+                        passwordInputFifthRequirement.classList.add('valid_requirement');
+                        passwordInputFifthRequirementStatus = true;
+
+                    }
+                    else{
+                        passwordInputFifthRequirement.classList.remove('neutral')
+                        passwordInputFifthRequirement.classList.remove('valid_requirement');
+                        passwordInputFifthRequirement.classList.add('invalid_requirement');
+                        passwordInputFifthRequirementStatus = false;
+                    }
+
+                }
+
+
+                passwordConfirmInput.onkeyup = function() {
+
+                    if (passwordConfirmInput.value == passwordInput.value){
+                        passwordConfirmInput.classList.remove('neutral_input');
+                        passwordConfirmInput.classList.remove('invalid_input');
+                        passwordConfirmInput.classList.add('valid_input');
+                        confirmPasswordStatus = true;
+
+                    }
+                    else{
+                        passwordConfirmInput.classList.remove('neutral_input');
+                        passwordConfirmInput.classList.remove('valid_input');
+                        passwordConfirmInput.classList.add('invalid_input');
+                        confirmPasswordStatus = false;
+                    }
+
+                }
+
+                $('.input_elements').keyup(function(){
+
+                    if (usernameInputFirstRequirementStatus && usernameInputSecondRequirementStatus && passwordInputFirstRequirementStatus && passwordInputThirdRequirementStatus
+                    && passwordInputFourthRequirementStatus && passwordInputFifthRequirementStatus && confirmPasswordStatus){
+
+                        document.getElementById("button_sign_up").disabled = false;
+                    }
+                    else{
+
+                        document.getElementById("button_sign_up").disabled = true;
+                    }
+
+                    if (usernameInputFirstRequirementStatus == false || usernameInputSecondRequirementStatus == false){
+                        usernameInput.classList.remove('neutral_input');
+                        usernameInput.classList.remove('valid_input');
+                        usernameInput.classList.add('invalid_input');
+                    }
+                    else{
+                        usernameInput.classList.remove('neutral_input');
+                        usernameInput.classList.remove('invalid_input');
+                        usernameInput.classList.add('valid_input');
+                    }
+
+                    if(passwordInputFirstRequirementStatus == false || passwordInputThirdRequirementStatus == false || passwordInputFourthRequirementStatus == false || passwordInputFifthRequirementStatus == false){
+                        passwordInput.classList.remove('neutral_input');
+                        passwordInput.classList.remove('valid_input');
+                        passwordInput.classList.add('invalid_input');
+                    }
+                    else{
+                        passwordInput.classList.remove('neutral_input');
+                        passwordInput.classList.remove('invalid_input');
+                        passwordInput.classList.add('valid_input');
+                    }
+
+
+                });
+
+
+            </script>
+
+    </body>
+</html>
+

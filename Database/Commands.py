@@ -21,6 +21,14 @@ def insert_into_user(user):
                             VALUES(?,?)''', user)
     return cursor.lastrowid
 
+def insert_into_user_to_add(user):
+    conn = connect()
+    with conn:
+        cursor = conn.cursor()
+        cursor.execute('''INSERT INTO user_to_add (login,hashed_password, date_time)
+                            VALUES(?,?,?)''', user)
+    return cursor.lastrowid
+
 def select_from_log():
     conn = connect()
     with conn:
@@ -69,12 +77,28 @@ def check_if_user_exist(login, password):
         hashed_password = generate_password_hash(password)
         cursor.execute(sql_select_query, (login,))
         user = cursor.fetchall()
+        if user:
+            if check_password_hash(user[0][1], password):
+                print("True")
+                return True
+            else:
+                print("False")
+                return False
+        else:
+            return False
 
-        if check_password_hash(user[0][1], password):
-            print("True")
+
+def check_if_user_exist_login(login):
+    conn = connect()
+    with conn:
+        cursor = conn.cursor()
+        sql_select_query = """SELECT * FROM user_to_add WHERE login = ?"""
+        cursor.execute(sql_select_query, (login,))
+        user = cursor.fetchall()
+        if user:
             return True
         else:
-            print("False")
             return False
+
 
 
