@@ -20,21 +20,15 @@
             }
 
 
-
-
             .container {
-
                 margin: 80px auto;
                 width: 90%;
                 max-width: 800px;
-
-
             }
 
 
             .registration {
                 background-color: #2c2c2c;
-
                 padding-left: 20px;
                 padding-right: 20px;
                 padding-bottom: 20px;
@@ -66,7 +60,6 @@
             }
 
 
-
             button {
               border: none;
               outline: 0;
@@ -78,7 +71,6 @@
               cursor: pointer;
               width: 100%;
               margin-top: 20px;
-
             }
 
 
@@ -88,9 +80,11 @@
               opacity: 0.8;
             }
 
+
             .container_inf_line {
                 margin: 10px;
             }
+
 
             .inf_line {
                 color: #df0707;
@@ -103,32 +97,37 @@
                 color: #c72444;
             }
 
+
             .valid_requirement {
                 color: #41fc03;
             }
 
+
             .neutral_requirement {
                 color: #baadb0;
             }
+
 
             .valid_input {
             border: 1px solid #00b38f;
 
             }
 
+
             .invalid_input {
-
               border: 1px solid #df0707;
-
             }
+
 
             .neutral_input {
                 border: 1px solid #888;
             }
 
+
             .input_elements{
 
             }
+
 
         </style>
 
@@ -140,21 +139,19 @@
                 <h1 style="font-family: Russo One, sans-serif; color: #00b38f; text-align: center; margin-top:10px;">Sign Up</h1>
 
 
-
                 {% with messages = get_flashed_messages() %}
                 {% if messages %}
                 <div class="container_inf_line">
-                  <p class="inf_line" id="informational_line_2">{{ messages[0] }}.</p>
+                  <p class="inf_line" id="informational_line_2">{{ messages[0] }}</p>
                 </div>
                 {% endif %}
                 {% endwith %}
 
 
-
                 <label for="username_sign_up" style="font-family: Russo One, sans-serif; color: #00b38f;">
                     <b>Username</b>
                 </label>
-                <input  class="neutral_input input_elements" type="text" id ="user_name_sign_up" placeholder="Enter Username" name="user_name_sign_up"  required >
+                <input  class="neutral_input input_elements" type="text" id ="user_name_sign_up" placeholder="Enter Username" name="user_name_sign_up"   >
                     <ul class="input-requirements neutral_requirement">
                         <li id = "first_requirement_username">At least 3 characters long</li>
                         <li id = "second_requirement_username">Must only contain letters and numbers (no special characters)</li>
@@ -162,23 +159,10 @@
 
 
 
-
-
-<!--                <label for="username">-->
-<!--                    <span>Username</span>-->
-
-<!--                    <input type="text" id="username" minlength="3" required>-->
-
-<!--                    <ul class="input-requirements">-->
-<!--                        <li>At least 3 characters long</li>-->
-<!--                        <li>Must only contain letters and numbers (no special characters)</li>-->
-<!--                    </ul>-->
-<!--                </label>-->
-
                 <label for="password_sign_up" style="font-family: Russo One, sans-serif; color: #00b38f;">
                     <b>Password</b>
                  </label>
-                <input class="neutral_input input_elements" type="password" id = "password_sign_up" placeholder="Enter Password" name="password_sign_up" required>
+                <input class="neutral_input input_elements" type="password" id = "password_sign_up" placeholder="Enter Password" name="password_sign_up" >
                     <ul class="input-requirements neutral_requirement">
                         <li id = "first_requirement_password">At least 8 characters long (and less than 100 characters)</li>
 
@@ -189,41 +173,14 @@
 
 
 
-<!--                <label for="password">-->
-<!--                    <span>Password</span>-->
-
-<!--                    <input type="password" id="password"-->
-<!--                            maxlength="100" minlength="8" required>-->
-
-<!--                    <ul class="input-requirements">-->
-<!--                        <li>At least 8 characters long (and less than 100 characters)</li>-->
-<!--                        <li>Contains at least 1 number</li>-->
-<!--                        <li>Contains at least 1 lowercase letter</li>-->
-<!--                        <li>Contains at least 1 uppercase letter</li>-->
-<!--                        <li>Contains a special character (e.g. @ !)</li>-->
-<!--                    </ul>-->
-<!--                </label>-->
-
-
                 <label for="confirm_password_sign_up" style="font-family: Russo One, sans-serif; color: #00b38f;">
                     <b>Confirm Password</b>
                 </label>
-                    <input class="neutral_input input_elements" type="password" id ="confirm_password_sign_up" placeholder="Enter Password" name="confirm_password_sign_up" required>
+                    <input class="neutral_input input_elements" type="password" id ="confirm_password_sign_up" placeholder="Enter Password" name="confirm_password_sign_up" >
 
 
 
                 <button id="button_sign_up" type="submit" disabled>Submit</button>
-
-
-
-<!--                <label for="password_repeat">-->
-<!--                    <span>Repeat Password</span>-->
-<!--                    <input type="password" id="password_repeat" maxlength="100" minlength="8" required>-->
-<!--                </label>-->
-
-<!--                <br>-->
-
-<!--                <input type="submit">-->
 
             </form>
 	</div>

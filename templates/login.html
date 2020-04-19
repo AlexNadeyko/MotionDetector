@@ -2,9 +2,197 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>CERBERUS - Login</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Play&display=swap" rel="stylesheet">
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+
+    <style>
+
+            body {
+                background-color:#0c0d0e;
+            }
+
+
+            .container {
+                margin: 80px auto;
+                width: 90%;
+                max-width: 800px;
+            }
+
+
+            .login_form {
+                background-color: #2c2c2c;
+                padding-left: 20px;
+                padding-right: 20px;
+                padding-bottom: 20px;
+                box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.3);
+                border: 1px solid #888;
+            }
+
+
+            input[type=text], input[type=password] {
+              width: 100%;
+              padding: 12px 20px;
+              margin: 8px 0;
+              display: inline-block;
+              box-sizing: border-box;
+              background-color: #333333;
+              color: #00b38f;
+              font-family: 'Play', sans-serif;
+            }
+
+
+
+            button {
+              border: none;
+              outline: 0;
+              display: inline-block;
+              padding: 10px 25px;
+              color: black;
+              background-color: #00b38f;
+              text-align: center;
+              cursor: pointer;
+              width: 100%;
+              margin-top: 20px;
+            }
+
+
+            button:hover {
+              background-color: #006652;
+              color: white;
+              opacity: 0.8;
+            }
+
+
+            .container_inf_line {
+                margin: 10px;
+            }
+
+
+            .inf_line {
+                color: #df0707;
+                text-align: center;
+            }
+
+
+            .valid_input {
+            border: 1px solid #00b38f;
+            }
+
+
+            .invalid_input {
+              border: 1px solid #df0707;
+            }
+
+
+            .neutral_input {
+                border: 1px solid #888;
+            }
+
+
+            .input_elements{
+
+            }
+
+        </style>
 </head>
 <body>
+
+
+    <div class="container">
+        <form class="login_form" action="/login" method="POST">
+            <h1 style="font-family: Russo One, sans-serif; color: #00b38f; text-align: center; margin-top:10px;">Login</h1>
+
+
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="container_inf_line">
+                <p class="inf_line" id="informational_line_1">{{ messages[0] }}</p>
+            </div>
+            {% endif %}
+            {% endwith %}
+
+
+              <label for="user_name_login" style="font-family: Russo One, sans-serif; color: #00b38f;"><b>Username</b></label>
+              <input type="text" class="neutral_input input_elements" id="input_username_login" placeholder="Enter Username" name="user_name_login" >
+
+              <label for="password_login" style="font-family: Russo One, sans-serif; color: #00b38f;"><b>Password</b></label>
+              <input type="password" class="neutral_input input_elements" id="input_password_login" placeholder="Enter Password" name="password_login" >
+
+              <button type="submit" id="button_login" disabled>Submit</button>
+
+        </form>
+    </div>
+
+
+    <script>
+
+        var inputUsername = document.getElementById('input_username_login');
+        var inputPassword = document.getElementById('input_password_login');
+
+        var inputUsernameStatus = false;
+        var inputPasswordStatus = false;
+
+
+        inputUsername.onkeyup = function(){
+            if (inputUsername.value.length != 0){
+                inputUsername.classList.remove('neutral_input');
+                inputUsername.classList.remove('invalid_input');
+                inputUsername.classList.add('valid_input');
+
+                inputUsernameStatus = true;
+            }
+            else{
+                inputUsername.classList.remove('neutral_input');
+                inputUsername.classList.remove('valid_input');
+                inputUsername.classList.add('invalid_input');
+
+                inputUsernameStatus = false;
+            }
+        }
+
+
+        inputPassword.onkeyup = function(){
+            if (inputPassword.value.length != 0){
+                inputPassword.classList.remove('neutral_input');
+                inputPassword.classList.remove('invalid_input');
+                inputPassword.classList.add('valid_input');
+
+                inputPasswordStatus = true;
+            }
+            else{
+                inputPassword.classList.remove('neutral_input');
+                inputPassword.classList.remove('valid_input');
+                inputPassword.classList.add('invalid_input');
+
+                inputPasswordStatus = false;
+            }
+        }
+
+
+
+        $('.input_elements').keyup(function(){
+
+                    if (inputUsernameStatus == true && inputPasswordStatus == true){
+
+                        document.getElementById("button_login").disabled = false;
+                    }
+                    else{
+
+                        document.getElementById("button_login").disabled = true;
+                    }
+                });
+
+
+
+
+    </script>
 
 </body>
 </html>

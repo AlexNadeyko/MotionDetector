@@ -30,9 +30,15 @@ def welcome_page():
 def main_page():
     return render_template('main_page.html')
 
+
 @app.route('/sign_up/')
 def sign_up_page():
     return render_template('sign_up.html')
+
+
+@app.route('/login/')
+def login_page():
+    return render_template('login.html')
 
 
 @app.route('/login', methods=['POST'])
@@ -42,16 +48,27 @@ def login():
 
     if db_commands.check_if_user_exist(user_name, password):
         return render_template('main_page.html')
-
-    return render_template('welcome_page.html')
+    else:
+        flash('Invalid Username or Password. Try again.')
+        return redirect(url_for('login_page'))
 
 
 @app.route('/sign_up', methods=['POST'])
 def sign_up():
     user_name = request.form.get('user_name_sign_up')
     password = request.form.get('password_sign_up')
-    if db_commands.check_if_user_exist_login(user_name):
-        flash('This username is already in use.')
+    if db_commands.check_if_user_exist_user_table(user_name):
+        user_exist_table_user = True
+    else:
+        user_exist_table_user = False
+
+    if db_commands.check_if_user_exist_user_to_add_table(user_name):
+        user_exist_table_user_to_add = True
+    else:
+        user_exist_table_user_to_add = False
+
+    if user_exist_table_user is True or user_exist_table_user_to_add is True:
+        flash('The Username already exists. Please use a different Username.')
         return redirect(url_for('sign_up_page'))
     else:
         hashed_password = generate_password_hash(password)
