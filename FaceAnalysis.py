@@ -6,6 +6,9 @@ from multiprocessing import Process
 import Data.DataProcessing as dp
 from os import path, mkdir
 import MotionDetection
+from datetime import datetime
+import Database.Commands as db_commands
+
 
 class FaceAnalyzer():
     def __init__(self, tolerance=0.6, model='haar'):
@@ -38,12 +41,17 @@ class FaceAnalyzer():
                 found_faces, faces = self.find_faces(motion)
                 if found_faces:
                     unknown_faces = []
+                    log_faces_recognition = []
                     for face in faces:
                         face_encoding = face_recognition.face_encodings(face)
                         face_encoding = np.asarray(face_encoding).flatten()
 
                         if len(face_encoding) == 0:
                             continue
+
+                        date_time_now = datetime.now()
+                        date_now_string = date_time_now.strftime("%d/%m/%Y")
+                        time_now_string = date_time_now.strftime("%H:%M:%S")
 
                         known_encodings_list = np.asarray(list(self.__encodings.values()))
 
@@ -52,15 +60,25 @@ class FaceAnalyzer():
 
                         if not is_known:
                             unknown_faces.append(face)
+                            is_success, image_buf_arr = cv2.imencode(".jpg", face)
+                            log_faces_recognition.append((date_now_string, time_now_string, "Unknown", image_buf_arr))
+
                         else:
+                            # Here sometimes exception occurs
                             try:
-                                known_name = list(self.__encodings.keys())[np.where(results)[0][0]] # Here sometimes exception occurs
+                                known_name = list(self.__encodings.keys())[np.where(results)[0][0]]
                                 print(f'Face known [{known_name}] (Remove this message after release)')
+                                is_success, image_buf_arr = cv2.imencode(".jpg", face)
+                                log_faces_recognition.append((date_now_string, time_now_string, known_name, image_buf_arr))
+
                             except:
                                 pass
 
                     if len(unknown_faces) > 0:
                         self.save_unknown_faces(unknown_faces)
+
+                    if len(log_faces_recognition) > 0:
+                        self.save_log_faces_to_database(log_faces_recognition)
 
 
     def find_faces(self, motion):
@@ -108,5 +126,10 @@ class FaceAnalyzer():
     def save_unknown_faces(self, faces):
         print('Saving unknown faces')
         for f in faces:
-            filename = rf'{self.__unknown_faces_dir}/{str(datetime.datetime.now())[11:-7].replace(":", ".")}.jpg'
+            filename = rf'{self.__unknown_faces_dir}/{str(datetime.now())[11:-7].replace(":", ".")}.jpg'
             cv2.imwrite(filename, f)
+
+
+    def save_log_faces_to_database(self, log_faces_recognition):
+        db_commands.insert_into_log(log_faces_recognition)
+

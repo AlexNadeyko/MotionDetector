@@ -9,7 +9,6 @@ from flask import flash
 from flask import url_for
 from datetime import datetime
 import cv2
-import Migrations.RunMigrations
 import Database.Commands as db_commands
 from werkzeug.security import generate_password_hash
 
@@ -26,9 +25,16 @@ def welcome_page():
     return render_template('welcome_page.html')
 
 
-@app.route('/main_page/')
-def main_page():
-    return render_template('main_page.html')
+@app.route('/main_page/<user>/')
+def main_page(user):
+    log_recognition_database = db_commands.select_from_log()
+
+    if user == "admin":
+        is_admin = True
+    else:
+        is_admin = False
+
+    return render_template('main_page.html', admin=is_admin, log_recognition=log_recognition_database)
 
 
 @app.route('/sign_up/')
@@ -41,13 +47,20 @@ def login_page():
     return render_template('login.html')
 
 
+@app.route('/managing_accounts/')
+def managing_accounts_page():
+    return render_template('managing_accounts_page.html', admin=True)
+
+
 @app.route('/login', methods=['POST'])
 def login():
     user_name = request.form.get('user_name_login')
     password = request.form.get('password_login')
 
     if db_commands.check_if_user_exist(user_name, password):
-        return render_template('main_page.html')
+
+        return redirect(url_for('main_page', user=user_name))
+
     else:
         flash('Invalid Username or Password. Try again.')
         return redirect(url_for('login_page'))
@@ -79,7 +92,10 @@ def sign_up():
         return redirect(url_for('welcome_page'))
 
 
-
+@app.route('/image_getting/<id_image_database>/')
+def generate_image(id_image_database):
+    image = db_commands.select_image_from_log(id_image_database)
+    return Response(image, mimetype='image/jpg')
 
 
 def generate():

@@ -4,15 +4,6 @@ import os
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-def insert_into_log(log):
-    conn = connect()
-    with conn:
-        cursor = conn.cursor()
-        cursor.execute('''INSERT INTO log (date_time,is_known,face_image)
-                            VALUES(?,?,?)''', log)
-    return cursor.lastrowid
-
-
 def insert_into_user(user):
     conn = connect()
     with conn:
@@ -47,6 +38,18 @@ def select_from_user():
     return rows
 
 
+def select_image_from_log(id_record):
+    conn = connect()
+    with conn:
+        cursor = conn.cursor()
+        sql_select_query = ("""SELECT * FROM log WHERE id_record = ?""")
+        cursor.execute(sql_select_query, (id_record,))
+        result = cursor.fetchall()
+
+    image = result[0][4]
+    return image
+
+
 def find_db_path():
     db_regex = '.*db$'
 
@@ -79,10 +82,8 @@ def check_if_user_exist(login, password):
         user = cursor.fetchall()
         if user:
             if check_password_hash(user[0][1], password):
-                print("True")
                 return True
             else:
-                print("False")
                 return False
         else:
             return False
@@ -112,5 +113,23 @@ def check_if_user_exist_user_to_add_table(login):
             return True
         else:
             return False
+
+
+def insert_into_log(log_faces_recognition):
+    conn = connect()
+    with conn:
+        cursor = conn.cursor()
+        sql_insert_query = '''INSERT INTO log (date, time, person, face_image)
+                            VALUES(?,?,?,?)'''
+        for log_entry in log_faces_recognition:
+            cursor.execute(sql_insert_query, log_entry)
+
+    return cursor.lastrowid
+
+
+
+
+
+
 
 

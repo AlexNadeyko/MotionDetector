@@ -5,13 +5,10 @@ CREATE TABLE IF NOT EXISTS user (
 );
 
 CREATE TABLE IF NOT EXISTS log (
-    date_time       TEXT        NOT NULL,
-    is_known        INTEGER     NOT NULL,
-    face_image      BLOB        NULL
-);
-
-CREATE TABLE IF NOT EXISTS user_to_add (
-    login               TEXT        NOT NULL,
-    hashed_password     TEXT        NOT NULL,
-    date_time           TEXT        NOT NULL
+    id_record       INTEGER     PRIMARY KEY     AUTOINCREMENT,
+    date            TEXT        NOT NULL,
+    time            TEXT        NOT NULL,
+    person          TEXT        NOT NULL,
+    face_image      BLOB        NOT NULL
 )
+

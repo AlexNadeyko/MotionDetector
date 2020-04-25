@@ -95,6 +95,9 @@
                 border-spacing: 0;
                 width:70%;
                 border: 2px solid #00b38f;
+
+
+
             }
 
             th, td {
@@ -105,7 +108,12 @@
             }
 
 
-            tr:nth-child(even){background-color: #00b38f}
+            tr:nth-child(even){
+                background-color: #00b38f
+            }
+
+
+
         </style>
 
     </head>
@@ -125,6 +133,13 @@
                         <li class="nav-item active">
                             <a class="nav-link" href="#">Main Page<span class="sr-only">(current)</span></a>
                         </li>
+                        {% if admin %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('managing_accounts_page')}}">Managing accounts</a>
+                        </li>
+                        {% endif %}
+
+
                         <li class="nav-item">
                             <a class="nav-link" href="#">Monitoring Log</a>
                         </li>
@@ -139,58 +154,56 @@
                     <div class="container-fluid">
                          <div class="container-fluid mt-4" >
                              <div class="row">
-                                 <div class="col-md-8">
+                                 <div class="col-md-6">
                                     <img id="myImg" src="{{ url_for('video_feed') }}" class="rounded" alt="Video" max-width="100%" height="auto" align="center">
+                                     <div id="myModal" class="modal">
 
+                                         <span class="close">&times;</span>
+                                         <img class="modal-content" id="img01">
+                                        <div id="caption"></div>
+                                     </div>
 
-        <div id="myModal" class="modal">
-          <span class="close">&times;</span>
-          <img class="modal-content" id="img01">
-          <div id="caption"></div>
-        </div>
+                            <script>
+                                var modal = document.getElementById("myModal");
+                                var img = document.getElementById("myImg");
+                                var modalImg = document.getElementById("img01");
+                                var captionText = document.getElementById("caption");
+                                img.onclick = function(){
+                                    modal.style.display = "block";
+                                    modalImg.src = this.src;
+                                    captionText.innerHTML = this.alt;
+                                }
+                                var span = document.getElementsByClassName("close")[0];
 
-        <script>
-        var modal = document.getElementById("myModal");
-        var img = document.getElementById("myImg");
-        var modalImg = document.getElementById("img01");
-        var captionText = document.getElementById("caption");
-        img.onclick = function(){
-          modal.style.display = "block";
-          modalImg.src = this.src;
-          captionText.innerHTML = this.alt;
-        }
-
-        var span = document.getElementsByClassName("close")[0];
-
-        span.onclick = function() {
-          modal.style.display = "none";
-        }
-        </script>
+                                span.onclick = function() {
+                                    modal.style.display = "none";
+                                }
+                            </script>
 
                                  </div>
-                                 <div class="col-md-4">
+                                 <div class="col-md-6">
                                     <div style="overflow-y:auto;">
                                          <table>
+
+                                                 <tr>
+                                                     <th>Data</th>
+                                                     <th>Time</th>
+                                                     <th>Person</th>
+                                                     <th>Image</th>
+                                                 </tr>
+
+
+
+                                             {% for row in log_recognition %}
                                              <tr>
-                                                 <th>Time</th>
-                                                 <th>Person</th>
-                                                 <th>Image</th>
+                                                 <td>{{ row[1] }}</td>
+                                                 <td>{{ row[2] }}</td>
+                                                 <td>{{ row[3] }}</td>
+                                                 <td> <img src="{{ url_for('generate_image', id_image_database=row[0]) }}" alt="Video"></td>
                                              </tr>
-                                             <tr>
-                                                 <td>01:12</td>
-                                                 <td>unknown</td>
-                                                 <td>none</td>
-                                             </tr>
-                                             <tr>
-                                                 <td>7:30</td>
-                                                 <td>I</td>
-                                                 <td>none</td>
-                                             </tr>
-                                             <tr>
-                                                 <td>12:01</td>
-                                                 <td>unknown</td>
-                                                 <td>none</td>
-                                             </tr>
+
+                                             {% endfor %}
+
                                          </table>
                                      </div>
                                  </div>
