@@ -11,4 +11,3 @@ CREATE TABLE IF NOT EXISTS log (
     person          TEXT        NOT NULL,
     face_image      BLOB        NOT NULL
 )
-

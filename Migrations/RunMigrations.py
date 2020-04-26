@@ -21,6 +21,18 @@ if __name__ == "__main__":
             print(f'Executing Script {script_path} ...')
             cursor.executescript(script)
 
+        cursor.execute('''SELECT COUNT(*) AS CNTREC FROM pragma_table_info("log") WHERE name="date_time"''')
+        column_exist = cursor.fetchall()[0][0]
+
+        if column_exist == 1:
+            cursor.execute('''DROP TABLE log''')
+            cursor.execute('''CREATE TABLE log (
+                                id_record       INTEGER     PRIMARY KEY     AUTOINCREMENT,
+                                date            TEXT        NOT NULL,
+                                time            TEXT        NOT NULL,
+                                person          TEXT        NOT NULL,
+                                face_image      BLOB        NOT NULL) ''')
+
         conn.commit()
         print('Changes successfully committed')
 
