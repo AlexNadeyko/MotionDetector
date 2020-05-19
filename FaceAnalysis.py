@@ -60,7 +60,7 @@ class FaceAnalyzer():
 
                         if not is_known:
                             unknown_faces.append(face)
-                            is_success, image_buf_arr = cv2.imencode(".jpg", face)
+                            is_success, image_buf_arr = cv2.imencode(".jpg", cv2.resize(face,(200, 200)))
                             log_faces_recognition.append((date_now_string, time_now_string, "Unknown", image_buf_arr))
 
                         else:
@@ -68,7 +68,7 @@ class FaceAnalyzer():
                             try:
                                 known_name = list(self.__encodings.keys())[np.where(results)[0][0]]
                                 print(f'Face known [{known_name}] (Remove this message after release)')
-                                is_success, image_buf_arr = cv2.imencode(".jpg", face)
+                                is_success, image_buf_arr = cv2.imencode(".jpg", cv2.resize(face,(200, 200)))
                                 log_faces_recognition.append((date_now_string, time_now_string, known_name, image_buf_arr))
 
                             except:

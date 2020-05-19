@@ -123,5 +123,3 @@ if __name__ == "__main__":
     detector.start()
     analyzer.start()
     app.run()
-
-

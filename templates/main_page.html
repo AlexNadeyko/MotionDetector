@@ -31,7 +31,7 @@
               display: block;
               width: 80%;
               max-width: 1400px;
-              max-high: 800px
+              max-height: 800px
               }
 
 
@@ -93,11 +93,8 @@
             table {
                 border-collapse: collapse;
                 border-spacing: 0;
-                width:70%;
+                width:100%;
                 border: 2px solid #00b38f;
-
-
-
             }
 
             th, td {
@@ -106,19 +103,18 @@
               font-family: Russo One, sans-serif;
               color: #ffffff;
               border: 1px solid black;
+              width: 1px;
+              white-space: nowrap;
+            }
+
+            td.test {
+                width: 1px;
+                white-space: nowrap;
             }
 
 
-            table tbody { height:600px; overflow-y:scroll; display:block; }
+            table tbody { height:600px; width:100%; overflow-y:scroll; display:block; }
             table thead { display:block; }
-
-#            tr:nth-child(even){
-#                background-color: #00b38f
-#            }
-
-            tr{
-
-            }
 
             .unknown {
                 background-color: #ff3333
@@ -136,7 +132,6 @@
     </head>
 
     <body style="background-image: url({{url_for('static', filename='background_5.png')}}); background-repeat: repeat; background-size: cover">
-
             <nav class="navbar navbar-dark" style="background-color: #262626;">
                 <a class="navbar-brand" href="#">
                     <img src={{url_for('static', filename='logo_1.png')}} alt="Logo" style="width:90px;">
@@ -167,18 +162,16 @@
                 </div>
             </nav>
 
-                <div class="container-fluid">
-                    <div class="container-fluid">
-                         <div class="container-fluid mt-4" >
-                             <div class="row">
-                                 <div class="col-md-6">
-                                    <img id="myImg" src="{{ url_for('video_feed') }}" class="rounded" alt="Video" max-width="100%" height="auto" align="center">
-                                     <div id="myModal" class="modal">
+            <div class="container-fluid mt-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img id="myImg" src="{{ url_for('video_feed') }}" class="rounded" alt="Video" max-width="100%" height="auto" align="center">
+                            <div id="myModal" class="modal">
 
-                                         <span class="close">&times;</span>
-                                         <img class="modal-content" id="img01">
-                                        <div id="caption"></div>
-                                     </div>
+                                <span class="close">&times;</span>
+                                <img class="modal-content" id="img01">
+                                <div id="caption"></div>
+                            </div>
 
                             <script>
                                 var modal = document.getElementById("myModal");
@@ -197,36 +190,27 @@
                                 }
                             </script>
 
-                                 </div>
-                                 <div class="col-md-6">
-                                    <div style="overflow-y:auto;">
-                                         <table>
+                    </div>
+                    <div style="overflow-y: auto; display: inline-block;">
+                        <table>
+                            <tr>
+                                <th>Data</th>
+                                <th>Time</th>
+                                <th>Person</th>
+                                <th>Image</th>
+                            </tr>
+                            {% for row in log_recognition %}
+                            <tr {% if row[3] =="Unknown" %} class="unknown" {% else %} class="known"  {% endif %}>
+                                <td class="test">{{ row[1] }}</td>
+                                <td class="test">{{ row[2] }}</td>
+                                <td class="test">{{ row[3] }}</td>
+                                <td> <img src="{{ url_for('generate_image', id_image_database=row[0]) }}" alt="Video"></td>
+                            </tr>
+                            {% endfor %}
 
-                                                 <tr>
-                                                     <th>Data</th>
-                                                     <th>Time</th>
-                                                     <th>Person</th>
-                                                     <th>Image</th>
-                                                 </tr>
-
-
-
-                                             {% for row in log_recognition %}
-                                             <tr {% if row[3] =="Unknown" %} class="unknown" {% else %} class="known"  {% endif %}>
-                                                 <td>{{ row[1] }}</td>
-                                                 <td>{{ row[2] }}</td>
-                                                 <td>{{ row[3] }}</td>
-                                                 <td> <img src="{{ url_for('generate_image', id_image_database=row[0]) }}" alt="Video"></td>
-                                             </tr>
-
-                                             {% endfor %}
-
-                                         </table>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
+                        </table>
                     </div>
                 </div>
+            </div>
     </body>
 </html>
