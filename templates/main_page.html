@@ -105,12 +105,29 @@
               padding: 8px;
               font-family: Russo One, sans-serif;
               color: #ffffff;
+              border: 1px solid black;
             }
 
 
-            tr:nth-child(even){
+            table tbody { height:600px; overflow-y:scroll; display:block; }
+            table thead { display:block; }
+
+#            tr:nth-child(even){
+#                background-color: #00b38f
+#            }
+
+            tr{
+
+            }
+
+            .unknown {
+                background-color: #ff3333
+            }
+
+            .known {
                 background-color: #00b38f
             }
+
 
 
 
@@ -195,7 +212,7 @@
 
 
                                              {% for row in log_recognition %}
-                                             <tr>
+                                             <tr {% if row[3] =="Unknown" %} class="unknown" {% else %} class="known"  {% endif %}>
                                                  <td>{{ row[1] }}</td>
                                                  <td>{{ row[2] }}</td>
                                                  <td>{{ row[3] }}</td>
