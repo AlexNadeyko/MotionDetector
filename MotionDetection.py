@@ -9,7 +9,7 @@ class MotionDetector:
     def __init__(self,
                  resolution:tuple = (800, 600),
                  threshold:int = 10,
-                 sensitivity:int = 1000):
+                 sensitivity:int = 300):
         self.resolution = resolution
         self.threshold = threshold
         self.sensitivity = sensitivity

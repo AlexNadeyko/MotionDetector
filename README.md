@@ -8,6 +8,9 @@ GENERAL REQUIREMENTS:
 4. Web deployment (In progress)
 5. Sms notifications system
 
+Some of the client side functions have only visual mockups.
+It is planned to add functionality to those in the future.
+
 
 First run instructions:
 1. Run pip3 install -r requirements.txt

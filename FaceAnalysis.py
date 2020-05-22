@@ -106,7 +106,7 @@ class FaceAnalyzer():
 
             if self.model == 'haar':
                 face_cascade = cv2.CascadeClassifier(r'./Cascades/haarcascade_frontalface_default.xml')
-                face_boxes = face_cascade.detectMultiScale(rotated, 1.25, minNeighbors=4)
+                face_boxes = face_cascade.detectMultiScale(rotated, 1.1, minNeighbors=4)
 
                 if len(face_boxes) == 0:
                     continue
