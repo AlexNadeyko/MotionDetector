@@ -24,7 +24,7 @@ def select_from_log():
     conn = connect()
     with conn:
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM log')
+        cursor.execute('SELECT * FROM log ORDER BY date desc, time desc')
         rows = cursor.fetchall()
     return rows
 
